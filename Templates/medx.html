@@ -1,0 +1,59 @@
+<head>
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/medx.css') }}"
+  />
+</head>
+{% extends "base.html" %}{% block content %}
+
+<div class="ci">
+  <h1>MedX</h1>
+  <div id="chat-container">MedX: Hi, there how are you feeling today!?</div>
+  <input
+    type="text"
+    id="message-input"
+    placeholder="Type your medical question..."
+  />
+  <button id="send-btn">Send</button>
+</div>
+
+<script>
+  const chatContainer = document.getElementById("chat-container");
+  const messageInput = document.getElementById("message-input");
+  const sendButton = document.getElementById("send-btn");
+
+  function addMessage(message, sender) {
+    const messageElement = document.createElement("div");
+    messageElement.textContent = `${sender}: ${message}`;
+    chatContainer.appendChild(messageElement);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
+  sendButton.addEventListener("click", () => {
+    const message = messageInput.value.trim();
+    if (message) {
+      addMessage(message, "You");
+
+      fetch("/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: message }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          addMessage(data.response, "MedX");
+        });
+
+      messageInput.value = "";
+    }
+  });
+
+  messageInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      sendButton.click();
+    }
+  });
+</script>
+{% endblock %}
