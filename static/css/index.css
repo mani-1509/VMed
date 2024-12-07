@@ -1,18 +1,32 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Home Section */
 .home {
   width: 100%;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
+
 .context {
   text-align: center;
   color: white;
+  animation: fadeIn 2s ease-in-out;
 }
 .context h1 {
   font-size: 95px;
   margin-bottom: 50px;
   font-weight: bold;
+  animation: slideIn 2s ease-in-out;
 }
 .context p {
   font-size: 29px;
@@ -24,6 +38,7 @@
   right: 0;
   bottom: 0;
   z-index: -1;
+  filter: brightness(50%);
 }
 
 @media (min-aspect-ratio: 16/9) {
@@ -39,33 +54,45 @@
   }
 }
 
+/* WCU Section */
 .wcu {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: 60px 40px 40px 40px;
+  margin: 60px 20px 40px 20px;
+  flex-wrap: wrap;
 }
 
 .wcu_p {
   font-size: 23px;
-  height: 300px;
-  width: 400px;
+  height: auto;
+  max-width: 400px;
+  margin: 20px;
+  text-align: center;
+  animation: fadeIn 1.5s ease-in-out;
 }
 .wcu_img {
-  height: 430px;
-  width: 400px;
+  height: auto;
+  max-width: 350px;
   border-radius: 10px;
+  animation: scaleIn 1.5s ease-in-out;
 }
+
+/* VMed Section */
 .vmed {
   background-color: #05318e;
   padding: 50px;
+  text-align: center;
 }
+
 .vmed h1 {
   font-size: 32px;
 }
+
 .para {
   color: white;
   margin-bottom: 40px;
+  animation: fadeIn 2s ease-in-out;
 }
 
 .card_para {
@@ -74,36 +101,98 @@
 .card_para h1 {
   margin-bottom: 20px;
 }
+
 .para h1 {
-  font-size: 90px;
-  font-family: "caveate";
+  font-size: 60px;
+  font-family: "Caveat", cursive;
   margin-bottom: 10px;
 }
 .para p {
-  font-size: 24px;
-  font-family: "Roboto";
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
 }
+
 .carrd {
-  border: 2px;
-  border-style: ridge;
-  border-color: black;
   text-align: center;
-  margin: 12px;
-  padding: 35px;
-  margin: 30px;
-  height: 400px;
-  width: 450px;
+  margin: 20px;
+  padding: 25px;
+  height: auto;
+  max-width: 400px;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
+.carrd:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
 .images {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
 }
+
 .ii {
-  height: 180px;
-  width: 200px;
+  height: auto;
+  max-width: 100%;
   border-radius: 5px;
   margin-bottom: 20px;
+  animation: fadeIn 2s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .context h1 {
+    font-size: 60px;
+  }
+  .context p {
+    font-size: 18px;
+  }
+  .wcu_p {
+    font-size: 18px;
+  }
+  .para h1 {
+    font-size: 40px;
+  }
+  .para p {
+    font-size: 16px;
+  }
+  .carrd {
+    margin: 15px;
+    padding: 20px;
+  }
 }
