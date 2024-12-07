@@ -28,3 +28,9 @@ body {
 #send-btn {
   padding: 10px;
 }
+input {
+  color: black;
+}
+input::placeholder {
+  color: black;
+}
