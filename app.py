@@ -1,7 +1,13 @@
 import re
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for, session
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
 # Medical knowledge base
 MEDICAL_RESPONSES = {
@@ -94,11 +100,6 @@ def find_best_response(user_message):
             return responses[0]  # Return first matching response
     return FALLBACK_RESPONSES[0]  # Default fallback response
 
-@app.route('/')
-def index():
-    """Render the chatbot interface."""
-    return render_template('index.html')
-
 @app.route('/medx')
 def medx():
     """Render the chatbot interface."""
@@ -114,6 +115,58 @@ def chat():
     user_message = request.json.get('message', '')
     response = find_best_response(user_message)
     return jsonify({'response': response})
+
+# User model
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), nullable=False, unique=True)
+    password = db.Column(db.String(200), nullable=False)
+    tracking_data = db.Column(db.Text, nullable=True)  # To store user-specific tracking data
+
+# Create the database
+with app.app_context():
+    db.create_all()
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        if user and check_password_hash(user.password, password):
+            session['user_id'] = user.id
+            return redirect(url_for('dashboard'))
+        return render_template('login.html', error="Invalid username or password")
+    return render_template('login.html')
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = generate_password_hash(request.form['password'])
+        if User.query.filter_by(username=username).first():
+            return render_template('signup.html', error="Username already exists")
+        new_user = User(username=username, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template('signup.html')
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    user = User.query.get(session['user_id'])
+    return render_template('dashboard.html', username=user.username, tracking_data=user.tracking_data)
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)
