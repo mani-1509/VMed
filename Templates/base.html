@@ -14,10 +14,15 @@
       <div class="nav">
         <nav class="navbar">
           <img
-            src="https://img1.getimg.ai/generated/f141147a-0996-4c97-a544-4d7f5cbab1ef/img-JDvDQ97clCKpUTkJvVr3M.jpeg "
+            src="https://img1.getimg.ai/generated/f141147a-0996-4c97-a544-4d7f5cbab1ef/img-JDvDQ97clCKpUTkJvVr3M.jpeg"
             class="logo"
           />
-          <ul>
+          <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <ul class="nav-links" id="nav-links">
             <li><a href="/">Home</a></li>
             <li><a href="/medx">MedX</a></li>
             <li><a href="/about">About Us</a></li>
@@ -66,5 +71,7 @@
         <p>&copy; 2024 Your Vmed. All Rights Reserved.</p>
       </div>
     </footer>
+
+    <script src="{{ url_for('static', filename='js/nav.js') }}"></script>
   </body>
 </html>
