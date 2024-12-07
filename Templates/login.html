@@ -6,18 +6,24 @@
 </head>
 
 {% extends "base.html" %}{% block content %}
-<h1>Login</h1>
-<form method="POST" action="/login">
-  <label for="username">Username:</label>
-  <input type="text" id="username" name="username" required />
-  <br />
-  <label for="password">Password:</label>
-  <input type="password" id="password" name="password" required />
-  <br />
-  <button type="submit">Login</button>
-</form>
-{% if error %}
-<p style="color: red">{{ error }}</p>
-{% endif %}
-<p>Don't have an account? <a href="/signup">Sign up here</a>.</p>
+<div class="out">
+  <div class="in">
+    <h1>Login</h1>
+    <br />
+    <form method="POST" action="/login" class="boxxs">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required /><br />
+      <br />
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required /><br />
+      <br />
+      <button type="submit">Login</button><br /><br />
+    </form>
+    {% if error %}
+    <p style="color: red">{{ error }}</p>
+    <br /><br />
+    {% endif %}
+    <p>Don't have an account? <a href="/signup">Sign up here</a>.</p>
+  </div>
+</div>
 {% endblock %}
