@@ -1,0 +1,21 @@
+<head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/dashboard.css') }}"
+    />
+  </head>
+  {% extends "base.html" %}{% block content %}
+  <header>
+    <h1>Welcome, {{ username }}</h1>
+  </header>
+  <a href="/logout" class="button">Logout</a>
+  <div class="container">
+    <h2>Your Dashboard</h2>
+    <p>Here is your personal health tracking information:</p>
+    <div class="tracking-data">
+      <h3>Tracking Data</h3>
+      <p>{{ tracking_data }}</p>
+    </div>
+  </div>
+  {% endblock %}
+</html>
